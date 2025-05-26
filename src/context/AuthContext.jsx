@@ -45,14 +45,13 @@ export const AuthProvider = ({ children }) => {
       console.log('Google sign-in successful, credential:', credentialResponse);
       const userData = await authService.googleAuth(credentialResponse.credential);
       console.log('Google auth user data:', userData);
-      setUser(userData);
       const newToken = localStorage.getItem('token');
-      if (newToken) {
-        setToken(newToken);
-        navigate('/marketplace');
-      } else {
+      if (!newToken) {
         throw new Error('Failed to get authentication token');
       }
+      setToken(newToken);
+      setUser(userData);
+      navigate('/marketplace');
     } catch (err) {
       console.error('Google auth failed:', err);
       logout();
@@ -68,13 +67,13 @@ export const AuthProvider = ({ children }) => {
       console.log('Attempting email login for:', email);
       const userData = await authService.login(email, password);
       console.log('Email login successful, user data:', userData);
-      setUser(userData);
       const newToken = localStorage.getItem('token');
-      if (newToken) {
-        setToken(newToken);
-        return true;
+      if (!newToken) {
+        throw new Error('Failed to get authentication token');
       }
-      throw new Error('Failed to get authentication token');
+      setToken(newToken);
+      setUser(userData);
+      return true;
     } catch (err) {
       console.error('Login failed:', err);
       throw err;
@@ -86,13 +85,13 @@ export const AuthProvider = ({ children }) => {
       console.log('Attempting registration for:', userData.email);
       const newUser = await authService.register(userData);
       console.log('Registration successful, user data:', newUser);
-      setUser(newUser);
       const newToken = localStorage.getItem('token');
-      if (newToken) {
-        setToken(newToken);
-        return true;
+      if (!newToken) {
+        throw new Error('Failed to get authentication token');
       }
-      throw new Error('Failed to get authentication token');
+      setToken(newToken);
+      setUser(newUser);
+      return true;
     } catch (err) {
       console.error('Registration failed:', err);
       throw err;

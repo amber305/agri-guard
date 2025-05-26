@@ -60,7 +60,7 @@ const MarketplacePage = () => {
       navigate('/signin');
       return;
     }
-    addToCart({ ...product, id: product._id, quantity: 1 });
+    addToCart({ ...product, _id: product._id, quantity: 1 });
   };
 
   const handleFilterChange = (newFilters) => {

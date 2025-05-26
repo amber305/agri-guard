@@ -4,7 +4,7 @@ import "aos/dist/aos.css";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FaGlobe, FaShoppingCart, FaSignOutAlt, FaUser } from 'react-icons/fa';
+import { FaGlobe, FaShoppingCart, FaSignOutAlt, FaUser, FaHistory, FaBox, FaUserCircle } from 'react-icons/fa';
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo.png";
 import { useAuth } from "../../context/AuthContext";
@@ -169,12 +169,60 @@ const Navbar = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-2"
+                        className="absolute right-0 mt-2 w-72 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden"
                       >
+                        {/* Profile Header */}
+                        <div className="bg-gradient-to-r from-green-500 to-green-600 p-4 text-white">
+                          <div className="flex items-center space-x-3">
+                            <div className="h-12 w-12 rounded-full bg-white/20 flex items-center justify-center">
+                              <FaUserCircle className="h-8 w-8" />
+                            </div>
+                            <div>
+                              <h3 className="font-semibold text-lg">{user?.name}</h3>
+                              <p className="text-sm text-white/80">{user?.email}</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Quick Stats */}
+                        <div className="grid grid-cols-2 gap-2 p-3 bg-gray-50 border-b border-gray-100">
+                          <Link
+                            to="/cart"
+                            className="flex flex-col items-center p-2 rounded-lg hover:bg-white transition-colors"
+                            onClick={() => setShowProfileDropdown(false)}
+                          >
+                            <div className="relative">
+                              <FaShoppingCart className="h-5 w-5 text-gray-600" />
+                              {itemCount > 0 && (
+                                <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                                  {itemCount}
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-xs text-gray-600 mt-1">Cart</span>
+                          </Link>
+                          <Link
+                            to="/orders"
+                            className="flex flex-col items-center p-2 rounded-lg hover:bg-white transition-colors"
+                            onClick={() => setShowProfileDropdown(false)}
+                          >
+                            <FaBox className="h-5 w-5 text-gray-600" />
+                            <span className="text-xs text-gray-600 mt-1">Orders</span>
+                          </Link>
+                        </div>
+
+                        {/* Menu Items */}
                         <div className="px-4 py-2 text-gray-700 border-b border-gray-100">
                           <span className="block font-medium">{user?.name}</span>
                           <span className="block text-xs text-gray-500">{user?.email}</span>
                         </div>
+                        <Link
+                          to="/orders"
+                          className="w-full text-left px-4 py-2 text-gray-700 hover:bg-green-50 flex items-center"
+                          onClick={() => setShowProfileDropdown(false)}
+                        >
+                          <FaHistory className="h-4 w-4 mr-2" /> Order History
+                        </Link>
                         <button
                           onClick={handleLogout}
                           className="w-full text-left px-4 py-2 text-gray-700 hover:bg-green-50 flex items-center"
@@ -353,6 +401,19 @@ const Navbar = () => {
                       >
                         <FaShoppingCart className="h-5 w-5 mr-2" />
                         {t('header.cart')}
+                      </Link>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      className="py-2"
+                    >
+                      <Link
+                        to="/orders"
+                        className="flex items-center text-white hover:text-green-300"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <FaHistory className="h-5 w-5 mr-2" />
+                        Order History
                       </Link>
                     </motion.div>
                     <motion.div

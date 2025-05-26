@@ -51,6 +51,7 @@ exports.deleteProduct = async (req, res) => {
 exports.getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find().populate('user', 'name email').populate('products.product');
+    console.log('Orders fetched for admin:', orders.length, orders[0]);
     res.json(orders);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch orders' });

@@ -35,12 +35,12 @@ export const CartProvider = ({ children }) => {
   const addToCart = (product) => {
     setCart((prevCart) => {
       // Check if product already exists in cart
-      const existingItem = prevCart.find((item) => item.id === product.id);
+      const existingItem = prevCart.find((item) => item._id === product._id);
 
       if (existingItem) {
         // Update quantity if product exists
         return prevCart.map((item) =>
-          item.id === product.id
+          item._id === product._id
             ? {
                 ...item,
                 quantity: Math.min(
@@ -52,7 +52,7 @@ export const CartProvider = ({ children }) => {
         );
       } else {
         // Add new product to cart
-        return [...prevCart, product];
+        return [...prevCart, { ...product, _id: product._id }];
       }
     });
     // Open cart drawer when adding items
@@ -60,7 +60,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+    setCart((prevCart) => prevCart.filter((item) => item._id !== productId));
   };
 
   const updateQuantity = (productId, newQuantity) => {
@@ -68,7 +68,7 @@ export const CartProvider = ({ children }) => {
 
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.id === productId ? { ...item, quantity: newQuantity } : item
+        item._id === productId ? { ...item, quantity: newQuantity } : item
       )
     );
   };
@@ -91,7 +91,7 @@ export const CartProvider = ({ children }) => {
 
   // Check if product is in cart
   const isInCart = (productId) => {
-    return cart.some((item) => item.id === productId);
+    return cart.some((item) => item._id === productId);
   };
 
   return (

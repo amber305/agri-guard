@@ -152,9 +152,37 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
+// @desc    Forgot Password
+// @route   POST /api/auth/forgot-password
+// @access  Public
+const forgotPassword = async (req, res) => {
+  try {
+    // Placeholder: In a real app, generate a reset token and send email
+    res.status(200).json({ message: 'Password reset link sent (placeholder)' });
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// @desc    Reset Password
+// @route   POST /api/auth/reset-password
+// @access  Public
+const resetPassword = async (req, res) => {
+  try {
+    // Placeholder: In a real app, verify token and update password
+    res.status(200).json({ message: 'Password has been reset (placeholder)' });
+  } catch (error) {
+    console.error('Reset password error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   googleAuth,
-  getCurrentUser
+  getCurrentUser,
+  forgotPassword,
+  resetPassword
 };

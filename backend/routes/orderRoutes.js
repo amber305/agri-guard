@@ -1,11 +1,22 @@
 const express = require("express");
-const Order = require("../models/Order");
+const { 
+  placeOrder, 
+  getMyOrders, 
+  getOrderById, 
+  updateOrderStatus,
+  getOrders 
+} = require("../controllers/orderController");
+const { protect, admin } = require("../middlewares/authMiddleware");
 const router = express.Router();
 
-router.post("/", async (req, res) => {
-  const order = new Order(req.body);
-  await order.save();
-  res.status(201).json(order);
-});
+// Public routes
+router.route('/')
+  .post(protect, placeOrder)
+  .get(protect, admin, getOrders);
+
+router.get('/myorders', protect, getMyOrders);
+router.route('/:id')
+  .get(protect, getOrderById)
+  .put(protect, admin, updateOrderStatus);
 
 module.exports = router;
